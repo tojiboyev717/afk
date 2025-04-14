@@ -186,6 +186,6 @@ bot.on('windowOpen', async (window) => {
 
     bot.on('end', () => {
         console.log("Serverdan chiqdi/Qayta ulanish.");
-        setTimeout(createBot, 5000);
+        setTimeout(init, 5000);
     });
 }

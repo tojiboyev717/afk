@@ -1,6 +1,6 @@
 const mineflayer = require('mineflayer');
 
-const botUsername = 'FN_01';
+const botUsername = 'FN_06';
 const botPassword = 'fort54321';
 const admin = 'Umid';
 var playerList = [];
@@ -186,6 +186,6 @@ bot.on('windowOpen', async (window) => {
 
     bot.on('end', () => {
         console.log("Serverdan chiqdi/Qayta ulanish.");
-        setTimeout(createBot, 5000);
+        setTimeout(init, 5000);
     });
 }

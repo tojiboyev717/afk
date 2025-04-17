@@ -176,16 +176,7 @@ bot.on('windowOpen', async (window) => {
         }, 500);
     }
 	
-    bot.on('kicked', (reason) => {
-        console.log(`Serverdan chiqib ketdi: ${reason}`);
-    });
-
-    bot.on('error', (err) => {
-        console.log(`Xato yuz berdi: ${err.message}`);
-    });
-
     bot.on('end', () => {
-        console.log("Serverdan chiqdi/Qayta ulanish.");
         setTimeout(init, 5000);
     });
 }

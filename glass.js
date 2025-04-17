@@ -57,4 +57,8 @@ function init() {
             bot.chat(command);
         }
     });
+	
+    bot.on('end', () => {
+        setTimeout(init, 5000);
+    });
 }

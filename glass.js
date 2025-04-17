@@ -1,7 +1,7 @@
 const mineflayer = require('mineflayer');
 
 const botUsername = 'FN_Glass';
-const botPassword = 'fortune321';
+const botPassword = 'fort54321';
 const admin = 'Umid';
 var playerList = [];
 var mcData;

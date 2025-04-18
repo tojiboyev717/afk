@@ -20,7 +20,6 @@ function init() {
     var bot = mineflayer.createBot(botOption);
 
     bot.on("messagestr", (message) => {
-        console.log(message);
 
         if (message.includes("register")) {
             bot.chat(`/register ${botPassword} ${botPassword}`);

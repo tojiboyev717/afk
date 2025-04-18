@@ -36,9 +36,16 @@ function createBot() {
     let status = "starting";
 
     bot.once('spawn', async () => {
+        console.log('? Bot spawn qilindi.');
 
+        // Botning hozirgi koordinatalarini chiqarish
+        console.log(`?? Botning turgan joyi: X:${bot.entity.position.x} Y:${bot.entity.position.y} Z:${bot.entity.position.z}`);
 
         status = "waiting_for_login";
+
+        // Serverdan kelgan xabarlarni tinglash
+        bot.on("messagestr", (message) => {
+        console.log(message);
 
         if (message.includes("register")) {
             bot.chat(`/register ${botPassword} ${botPassword}`);
@@ -52,6 +59,7 @@ function createBot() {
         setTimeout(() => {
             bot.chat('/is warp miner1');
         }, 1000);
+     });
 
         // 3. Qazishni boshlash
         setTimeout(() => {

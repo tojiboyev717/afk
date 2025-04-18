@@ -59,7 +59,6 @@ function createBot() {
         setTimeout(() => {
             bot.chat('/is warp miner1');
         }, 1000);
-     });
 
         // 3. Qazishni boshlash
         setTimeout(() => {

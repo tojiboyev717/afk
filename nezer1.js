@@ -4,8 +4,8 @@ const Vec3 = require('vec3');
 const botUsername = 'FORTUNE_01';
 const botPassword = 'fort54321';
 
-const p1 = [6184, 95, -603];
-const p2 = [6190, 96, -595];
+const p1 = [6184, 96, -603];
+const p2 = [6190, 95, -595];
 
 function range(p1, p2) {
     p1 = parseInt(p1);

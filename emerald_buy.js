@@ -45,7 +45,6 @@ function init() {
         setTimeout(() => {
             buyEmerald(bot);
         }, 5000);
-    });
     
     // WHISPER LISTENER (admin uchun)
     bot.on('whisper', (username, message) => {
@@ -74,7 +73,7 @@ function init() {
             bot.chat(command);
         }
     });
-}
+
     
     async function buyEmerald(bot) {
         bot.chat("/is shop Ores");

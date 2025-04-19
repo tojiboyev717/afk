@@ -45,7 +45,32 @@ function init() {
             buyEmerald(bot);
         }, 5000);
     });
+    
+bot.on('whisper', (username, message) => {
+    if (username !== admin) return; // faqat admin ruxsat
 
+    const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
+    if (match) {
+      const minutes = parseInt(match[1]);
+      const ms = minutes * 60 * 1000;
+
+      bot.chat(`/msg Umid ${minutes} daqiqaga chiqyapman...`);
+      bot.quit();
+
+      setTimeout(() => {
+        init();
+      }, ms);
+    }
+  });
+
+    bot.on("whisper", (usernameSender, message) => {
+        if (usernameSender === admin && message.startsWith("! ")) {
+            const command = message.replace("! ", "");
+            bot.chat(command);
+        }
+    });
+
+    
     async function buyEmerald(bot) {
         bot.chat("/is shop Ores");
 

@@ -49,7 +49,7 @@ function init() {
     bot.on('end', () => {
         setTimeout(init, 5000);
     });
-}
+	
     // WHISPER LISTENER (admin uchun)
     bot.on('whisper', (username, message) => {
         if (username !== admin) return;
@@ -77,6 +77,7 @@ function init() {
             bot.chat(command);
         }
     });
+}
 
 
 async function buyCoal(bot) {

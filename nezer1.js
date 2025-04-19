@@ -3,6 +3,7 @@ const Vec3 = require('vec3');
 
 const botUsername = 'FORTUNE_01';
 const botPassword = 'fort54321';
+const admin = 'Umid';
 
 const p1 = [6184, 96, -603];
 const p2 = [6190, 95, -595];
@@ -33,11 +34,9 @@ function createBot() {
 });
 
 
-    let status = "starting";
 
     bot.once('spawn', async () => {
 
-        status = "waiting_for_login";
 
         // Serverdan kelgan xabarlarni tinglash
         bot.on("messagestr", (message) => {

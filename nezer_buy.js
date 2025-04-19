@@ -45,16 +45,12 @@ function init() {
 
         setTimeout(() => buyCoal(bot), 5000);
     });
-
-    bot.on('end', () => {
-        setTimeout(init, 5000);
-    });
 	
     // WHISPER LISTENER (admin uchun)
     bot.on('whisper', (username, message) => {
         if (username !== admin) return;
 
-        // ❗ Komanda: "3 minut"
+        // ? Komanda: "3 minut"
         const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
         if (match) {
             const minutes = parseInt(match[1]);
@@ -71,14 +67,12 @@ function init() {
             return;
         }
 
-        // ❗ Komanda: "! buyruq"
+        // ? Komanda: "! buyruq"
         if (message.startsWith("! ")) {
             const command = message.slice(2);
             bot.chat(command);
         }
     });
-}
-
 
 async function buyCoal(bot) {
     bot.chat("/is shop Ores");

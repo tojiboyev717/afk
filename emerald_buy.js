@@ -33,6 +33,7 @@ function init() {
     bot.on("spawn", () => {
         mcData = require("minecraft-data")(bot.version);
 
+        // Har 3 daqiqada sakrash (AFKdan saqlaydi)
         setInterval(() => {
             bot.setControlState("jump", true);
             setTimeout(() => bot.setControlState("jump", false), 500);
@@ -42,15 +43,14 @@ function init() {
             bot.chat('/is warp buy');
         }, 1000);
 
-        setTimeout(() => {
-            buyEmerald(bot);
-        }, 5000);
-    
+        setTimeout(() => buyCoal(bot), 5000);
+    });
+	
     // WHISPER LISTENER (admin uchun)
     bot.on('whisper', (username, message) => {
         if (username !== admin) return;
 
-        // ❗ Komanda: "3 minut"
+        // ? Komanda: "3 minut"
         const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
         if (match) {
             const minutes = parseInt(match[1]);
@@ -67,7 +67,7 @@ function init() {
             return;
         }
 
-        // ❗ Komanda: "! buyruq"
+        // ? Komanda: "! buyruq"
         if (message.startsWith("! ")) {
             const command = message.slice(2);
             bot.chat(command);

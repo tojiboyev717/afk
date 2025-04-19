@@ -41,7 +41,7 @@ function init() {
 
         setTimeout(() => {
             bot.chat('/is warp buy');
-        }, 1000);
+        }, 5000);
 
         setTimeout(() => buyCoal(bot), 5000);
     });

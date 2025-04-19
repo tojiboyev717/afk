@@ -5,6 +5,7 @@ const botUsername = 'FORTUNE_04';
 const botPassword = 'fort54321';
 const admin = 'Umid';
 var mcData;
+let bot;
 
 const botOption = {
     host: 'hypixel.uz',

@@ -51,7 +51,7 @@ bot.on('whisper', (username, message) => {
     if (username !== admin) return;
 
     if (message.toLowerCase() === 'quit') {
-        bot.chat('Serverdan chiqyapman... 1 daqiqadan so‘ng qaytaman.');
+        bot.chat('/msg Umid Serverdan chiqyapman... 1 daqiqadan so‘ng qaytaman.');
         bot.quit();
 
         setTimeout(() => {

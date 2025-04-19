@@ -53,12 +53,12 @@ function createBot() {
         // 1. Warp
         setTimeout(() => {
             bot.chat('/is warp miner1');
-        }, 1000);
+        }, 4000);
 
         // 3. Qazishni boshlash
         setTimeout(() => {
             digZigZag();
-        }, 3000);
+        }, 5000);
     });
 
     // WHISPER LISTENER (admin uchun)

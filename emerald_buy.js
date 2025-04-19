@@ -74,6 +74,7 @@ function init() {
             bot.chat(command);
         }
     });
+}
     
     async function buyEmerald(bot) {
         bot.chat("/is shop Ores");

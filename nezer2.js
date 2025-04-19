@@ -36,10 +36,6 @@ function createBot() {
     let status = "starting";
 
     bot.once('spawn', async () => {
-        console.log('? Bot spawn qilindi.');
-
-        // Botning hozirgi koordinatalarini chiqarish
-        console.log(`?? Botning turgan joyi: X:${bot.entity.position.x} Y:${bot.entity.position.y} Z:${bot.entity.position.z}`);
 
         status = "waiting_for_login";
 
@@ -66,26 +62,30 @@ function createBot() {
         }, 3000);
     });
 
+    // WHISPER LISTENER (admin uchun)
     bot.on('whisper', (username, message) => {
-    if (username !== admin) return; // faqat admin ruxsat
+        if (username !== admin) return;
 
-    const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
-    if (match) {
-      const minutes = parseInt(match[1]);
-      const ms = minutes * 60 * 1000;
+        // ❗ Komanda: "3 minut"
+        const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
+        if (match) {
+            const minutes = parseInt(match[1]);
+            const ms = minutes * 60 * 1000;
 
-      bot.chat(`/msg Umid ${minutes} daqiqaga chiqyapman...`);
-      bot.quit();
+            bot.chat(`/msg ${admin} ${minutes} daqiqaga chiqyapman...`);
+            isManualQuit = true;
+            bot.quit();
 
-      setTimeout(() => {
-        init();
-      }, ms);
-    }
-  });
+            setTimeout(() => {
+                isManualQuit = false;
+                init();
+            }, ms);
+            return;
+        }
 
-    bot.on("whisper", (usernameSender, message) => {
-        if (usernameSender === admin && message.startsWith("! ")) {
-            const command = message.replace("! ", "");
+        // ❗ Komanda: "! buyruq"
+        if (message.startsWith("! ")) {
+            const command = message.slice(2);
             bot.chat(command);
         }
     });

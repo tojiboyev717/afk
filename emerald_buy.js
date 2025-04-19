@@ -43,7 +43,7 @@ function init() {
             bot.chat('/is warp buy');
         }, 1000);
 
-        setTimeout(() => buyCoal(bot), 5000);
+        setTimeout(() => buyEmerald(bot), 5000);
     });
 	
     // WHISPER LISTENER (admin uchun)

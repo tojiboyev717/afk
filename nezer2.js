@@ -52,44 +52,37 @@ function createBot() {
         }
     });
 
-        // 1. Warp
+
         setTimeout(() => {
             bot.chat('/is warp miner2');
         }, 4000);
 
-        // 3. Qazishni boshlash
         setTimeout(() => {
             digZigZag();
         }, 5000);
     });
 
-    // WHISPER LISTENER (admin uchun)
-    bot.on('whisper', (username, message) => {
-        if (username !== admin) return;
+  // WHISPER LISTENER (admin uchun)
+bot.on('whisper', (username, message) => {
+    if (username !== admin) return;
 
-        // ❗ Komanda: "3 minut"
-        const match = message.toLowerCase().match(/^(\d+)\s*minut$/);
-        if (match) {
-            const minutes = parseInt(match[1]);
-            const ms = minutes * 60 * 1000;
+    if (message.toLowerCase() === 'quit') {
+        bot.chat('Serverdan chiqyapman... 1 daqiqadan so‘ng qaytaman.');
+        bot.quit();
 
-            bot.chat(`/msg ${admin} ${minutes} daqiqaga chiqyapman...`);
-            isManualQuit = true;
-            bot.quit();
+        setTimeout(() => {
+            init(); // Botni qaytadan ishga tushiradi
+        }, 60 * 1000); // 1 daqiqa kutadi
+        return;
+    }
 
-            setTimeout(() => {
-                isManualQuit = false;
-                init();
-            }, ms);
-            return;
-        }
+    // ❗ Komanda: "! buyruq"
+    if (message.startsWith("! ")) {
+        const command = message.slice(2);
+        bot.chat(command);
+    }
+});
 
-        // ❗ Komanda: "! buyruq"
-        if (message.startsWith("! ")) {
-            const command = message.slice(2);
-            bot.chat(command);
-        }
-    });
 
 
     async function digZigZag() {

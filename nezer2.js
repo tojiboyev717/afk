@@ -3,6 +3,7 @@ const Vec3 = require('vec3');
 
 const botUsername = 'FORTUNE_02';
 const botPassword = 'fort54321';
+const admin = 'Umid';
 
 const p1 = [6184, 96, -583];
 const p2 = [6190, 95, -576];
@@ -54,12 +55,12 @@ function createBot() {
         // 1. Warp
         setTimeout(() => {
             bot.chat('/is warp miner2');
-        }, 1000);
+        }, 4000);
 
         // 3. Qazishni boshlash
         setTimeout(() => {
             digZigZag();
-        }, 3000);
+        }, 5000);
     });
 
     // WHISPER LISTENER (admin uchun)

@@ -1,11 +1,10 @@
 const mineflayer = require('mineflayer');
 const { Vec3 } = require('vec3');
 
-const botUsername = 'FORTUNE_03';
+const botUsername = 'FORTUNE_04';
 const botPassword = 'fort54321';
 const admin = 'Umid';
 var mcData;
-let bot;
 
 const botOption = {
     host: 'hypixel.uz',
@@ -21,7 +20,6 @@ function init() {
     var bot = mineflayer.createBot(botOption);
 
     bot.on("messagestr", (message) => {
-
         if (message.includes("register")) {
             bot.chat(`/register ${botPassword} ${botPassword}`);
         }
@@ -30,10 +28,19 @@ function init() {
         }
     });
 
+    bot.on("whisper", (username, message) => {
+        if (username === admin && message === "quit") {
+            bot.chat("Bot to‘xtatildi. 1 daqiqadan so‘ng qayta ulanadi.");
+            bot.quit();
+            setTimeout(() => {
+                init();
+            }, 60 * 1000);
+        }
+    });
+
     bot.on("spawn", () => {
         mcData = require("minecraft-data")(bot.version);
 
-        // Har 3 daqiqada sakrash (AFKdan saqlaydi)
         setInterval(() => {
             bot.setControlState("jump", true);
             setTimeout(() => bot.setControlState("jump", false), 500);
@@ -41,126 +48,100 @@ function init() {
 
         setTimeout(() => {
             bot.chat('/is warp buy');
-        }, 5000);
-
-        setTimeout(() => buyCoal(bot), 5000);
-    });
-	
-// WHISPER LISTENER (admin uchun)
-bot.on('whisper', (username, message) => {
-    if (username !== admin) return;
-
-    if (message.toLowerCase() === 'quit') {
-        bot.chat('/msg Umid Serverdan chiqyapman... 1 daqiqadan so‘ng qaytaman.');
-        bot.quit();
+        }, 1000);
 
         setTimeout(() => {
-            init(); // Botni qaytadan ishga tushiradi
-        }, 60 * 1000); // 1 daqiqa kutadi
-        return;
-    }
+            buyCoal(bot);
+        }, 5000);
+    });
 
-    // ❗ Komanda: "! buyruq"
-    if (message.startsWith("! ")) {
-        const command = message.slice(2);
-        bot.chat(command);
-    }
-});
+    async function buyCoal(bot) {
+        bot.chat("/is shop Ores");
 
-async function buyCoal(bot) {
-    bot.chat("/is shop Ores");
+        setTimeout(async () => {
+            if (!bot.currentWindow) return;
+            if (!bot.currentWindow.title.includes('Island Shop | Ores')) return;
 
-    setTimeout(async () => {
-        if (!bot.currentWindow) return;
-        if (!bot.currentWindow.title.includes('Island Shop | Ores')) return;
+            let freeSlots = bot.inventory.emptySlotCount();
+            let coalStackSize = 64;
+            let maxCoals = freeSlots * coalStackSize;
 
-        let freeSlots = bot.inventory.emptySlotCount();
-        let coalStackSize = 64;
-        let maxCoals = freeSlots * coalStackSize;
-
-        if (maxCoals === 0) {
-            if (bot.currentWindow) {
-                await bot.closeWindow(bot.currentWindow);
-            }
-            setTimeout(() => depositCoal(bot), 3000);
-            return;
-        }
-
-        // Faqat bir marta ishlaydigan listener
-        const inventoryFullListener = async (username, message) => {
-            if (message.includes("Your inventory is full!")) {
-                bot.removeListener("chat", inventoryFullListener);
-                if (bot.currentWindow) {
-                    try {
-                        await bot.closeWindow(bot.currentWindow);
-                    } catch (e) {}
-                }
+            if (maxCoals === 0) {
+                if (bot.currentWindow) await bot.closeWindow(bot.currentWindow);
                 setTimeout(() => depositCoal(bot), 3000);
+                return;
             }
-        };
-        bot.on("chat", inventoryFullListener);
 
-        // 🟫 12-slotdagi coal-ni bosadi (agar boshqa slotda bo‘lsa, slot raqamini o‘zgartiring)
-        for (let i = 0; i < maxCoals; i++) {
-            setTimeout(() => {
+            const inventoryFullListener = async (username, message) => {
+                if (message.includes("Your inventory is full!")) {
+                    bot.removeListener("chat", inventoryFullListener);
+                    if (bot.currentWindow) {
+                        try {
+                            await bot.closeWindow(bot.currentWindow);
+                        } catch (e) {}
+                    }
+                    setTimeout(() => depositCoal(bot), 3000);
+                }
+            };
+            bot.on("chat", inventoryFullListener);
+
+            for (let i = 0; i < maxCoals; i++) {
+                setTimeout(() => {
+                    try {
+                        if (bot.currentWindow) {
+                            bot.simpleClick.leftMouse(11, 0, 0); // ❗ Slotni moslab qo‘ydim: slot 21 odatda coal
+                        }
+                    } catch (err) {}
+                }, i * 100);
+            }
+
+            setTimeout(async () => {
                 try {
                     if (bot.currentWindow) {
-                        bot.simpleClick.leftMouse(11, 0, 0);
+                        await bot.closeWindow(bot.currentWindow);
                     }
                 } catch (err) {}
-            }, i * 100);
-        }
+                setTimeout(() => depositCoal(bot), 3000);
+            }, maxCoals * 100 + 1000);
+        }, 3000);
+    }
 
-        // Yakunda oynani yopadi va coalni chestga qo‘yadi
-        setTimeout(async () => {
+    async function depositCoal(bot) {
+        const p1 = new Vec3(6185, 86, -591);  // Chesting joylashuvi
+        let coals = bot.inventory.items().filter(item => item.name === 'coal');
+        if (coals.length === 0) return;
+
+        const chestBlock = await bot.blockAt(p1);
+        if (!chestBlock || chestBlock.name !== 'chest') return;
+
+        let chest;
+        let attempts = 0;
+        while (!chest && attempts < 3) {
             try {
-                if (bot.currentWindow) {
-                    await bot.closeWindow(bot.currentWindow);
-                }
-            } catch (err) {}
-
-            setTimeout(() => depositCoal(bot), 3000);
-        }, maxCoals * 100 + 1000);
-    }, 3000);
-}
-
-async function depositCoal(bot) {
-    const p1 = new Vec3(6185, 86, -591);  // Chesting joylashuvi
-
-    let coals = bot.inventory.items().filter(item => item.name === 'coal');
-    if (coals.length === 0) return;
-
-    const chestBlock = await bot.blockAt(p1);
-    if (!chestBlock || chestBlock.name !== 'chest') return;
-
-    let chest;
-    let attempts = 0;
-    while (!chest && attempts < 3) {
-        try {
-            chest = await bot.openChest(chestBlock);
-        } catch (error) {
-            attempts++;
-            await bot.waitForTicks(20);
+                chest = await bot.openChest(chestBlock);
+            } catch (error) {
+                attempts++;
+                await bot.waitForTicks(20);
+            }
         }
+
+        if (!chest) return;
+
+        for (let i = 0; i < coals.length; i++) {
+            const coal = coals[i];
+            try {
+                await chest.deposit(coal.type, null, coal.count);
+            } catch (error) {}
+        }
+
+        await chest.close();
+
+        setTimeout(() => {
+            setTimeout(() => buyCoal(bot), 5000);
+        }, 2000);
     }
-    if (!chest) return;
 
-    for (let i = 0; i < coals.length; i++) {
-        const coal = coals[i];
-        try {
-            await chest.deposit(coal.type, null, coal.count);
-        } catch (error) {}
-    }
-
-    await chest.close();
-
-    // Davomini davom ettiradi
-    setTimeout(() => {
-        setTimeout(() => buyCoal(bot), 5000);
-    }, 2000);
-	
-	    bot.on('end', () => {
-        setTimeout(createBot, 5000);
+    bot.on('end', () => {
+        setTimeout(init, 5000);
     });
-}
 }

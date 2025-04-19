@@ -41,7 +41,7 @@ function init() {
 
         setTimeout(() => {
             bot.chat('/is warp buy');
-        }, 1000);
+        }, 5000);
 
         setTimeout(() => buyEmerald(bot), 5000);
     });

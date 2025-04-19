@@ -1,7 +1,7 @@
 const mineflayer = require('mineflayer');
 const { Vec3 } = require('vec3');
 
-const botUsername = 'FORTUNE_04';
+const botUsername = 'FORTUNE_03';
 const botPassword = 'fort54321';
 const admin = 'Umid';
 var mcData;

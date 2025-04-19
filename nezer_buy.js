@@ -170,3 +170,4 @@ async function depositCoal(bot) {
         setTimeout(createBot, 5000);
     });
 }
+}

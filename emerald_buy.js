@@ -28,13 +28,24 @@ function init() {
         }
     });
 
-    bot.on("whisper", (username, message) => {
-    if (username === admin && message === "quit") {
-        bot.chat("Bot to‘xtatildi. 1 daqiqadan so‘ng qayta ulanadi.");
+// WHISPER LISTENER (admin uchun)
+bot.on('whisper', (username, message) => {
+    if (username !== admin) return;
+
+    if (message.toLowerCase() === 'quit') {
+        bot.chat('/msg Umid Serverdan chiqyapman... 1 daqiqadan so‘ng qaytaman.');
         bot.quit();
+
         setTimeout(() => {
-            init();
-        }, 60 * 1000);
+            init(); // Botni qaytadan ishga tushiradi
+        }, 60 * 1000); // 1 daqiqa kutadi
+        return;
+    }
+
+    // ❗ Komanda: "! buyruq"
+    if (message.startsWith("! ")) {
+        const command = message.slice(2);
+        bot.chat(command);
     }
 });
 

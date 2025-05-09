@@ -37,29 +37,6 @@ function init() {
             bot.chat(`/login ${botPassword}`);
         }
 
-bot.on("messagestr", (message) => {
-    // 1. "claim" deb yozsangiz, bot /bal yozadi va flagni yoqadi
-    if (message.toLowerCase().includes("pay")) {
-        shouldSendMoney = true;
-        bot.chat("/bal");
-        return;
-    }
-
-    // 2. Agar "Balance: $" xabari kelsa va flag yoqilgan bo‘lsa
-    if (shouldSendMoney && message.includes("Balance: $")) {
-        let balanceStr = message.match(/Balance: \$([\d,]+)/);
-        if (!balanceStr || balanceStr.length < 2) return;
-
-        let balance = parseInt(balanceStr[1].replace(/,/g, ""));
-
-        if (balance > 0) {
-            bot.chat(`/pay ${admin} ${balance}`);
-            shouldSendMoney = false; // Keyingi "claim"gacha kutadi
-        }
-    }
-});
-
-
     bot.on("spawn", () => {
         mcData = require("minecraft-data")(bot.version);
 
@@ -88,6 +65,28 @@ bot.on("messagestr", (message) => {
             bot.chat(command);
         }
     });
+	    
+bot.on("messagestr", (message) => {
+    // 1. "claim" deb yozsangiz, bot /bal yozadi va flagni yoqadi
+    if (message.toLowerCase().includes("pay")) {
+        shouldSendMoney = true;
+        bot.chat("/bal");
+        return;
+    }
+
+    // 2. Agar "Balance: $" xabari kelsa va flag yoqilgan bo‘lsa
+    if (shouldSendMoney && message.includes("Balance: $")) {
+        let balanceStr = message.match(/Balance: \$([\d,]+)/);
+        if (!balanceStr || balanceStr.length < 2) return;
+
+        let balance = parseInt(balanceStr[1].replace(/,/g, ""));
+
+        if (balance > 0) {
+            bot.chat(`/pay ${admin} ${balance}`);
+            shouldSendMoney = false; // Keyingi "claim"gacha kutadi
+        }
+    }
+});
 
 
     // Chestdan honey olish va sotish

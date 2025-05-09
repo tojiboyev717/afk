@@ -3,6 +3,7 @@ const mineflayer = require('mineflayer');
 const botUsername = 'FN_01';
 const botPassword = 'fort54321';
 const admin = 'Umid';
+let shouldSendMoney = false;
 var playerList = [];
 var mcData;
 
@@ -36,8 +37,15 @@ function init() {
             bot.chat(`/login ${botPassword}`);
         }
 
-        // Hisobdagi pullarni avtomatik yuborish
-        if (message.includes("Balance: $")) {
+        // 1. "claim" deb yozsangiz, bot /bal yozadi va flagni yoqadi
+        if (message.toLowerCase().includes("pay")) {
+            shouldSendMoney = true;
+            bot.chat("/bal");
+            return;
+        }
+
+        // 2. Agar "Balance: $" xabari kelsa va flag yoqilgan bo‘lsa
+        if (shouldSendMoney && message.includes("Balance: $")) {
             let balanceStr = message.match(/Balance: \$([\d,]+)/);
             if (!balanceStr || balanceStr.length < 2) return;
 
@@ -45,6 +53,7 @@ function init() {
 
             if (balance > 0) {
                 bot.chat(`/pay ${admin} ${balance}`);
+                shouldSendMoney = false; // Keyingi "claim"gacha kutadi
             }
         }
     });
@@ -66,7 +75,7 @@ function init() {
         // Har 1 daqiqada bir honey olish
         setInterval(() => {
             withdrawHoney(bot, mcData);
-        }, 15 * 60 * 1000);
+        }, 5 * 60 * 1000);
     });
 
 
@@ -77,8 +86,7 @@ function init() {
             bot.chat(command);
         }
     });
-
-
+	    
     // Chestdan honey olish va sotish
 bot.on('windowOpen', async (window) => {
         setTimeout(() => {

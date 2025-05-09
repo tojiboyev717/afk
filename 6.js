@@ -3,6 +3,7 @@ const mineflayer = require('mineflayer');
 const botUsername = 'FN_06';
 const botPassword = 'fort54321';
 const admin = 'Umid';
+let shouldSendMoney = false;
 var playerList = [];
 var mcData;
 
@@ -36,18 +37,28 @@ function init() {
             bot.chat(`/login ${botPassword}`);
         }
 
-        // Hisobdagi pullarni avtomatik yuborish
-        if (message.includes("Balance: $")) {
-            let balanceStr = message.match(/Balance: \$([\d,]+)/);
-            if (!balanceStr || balanceStr.length < 2) return;
+bot.on("messagestr", (message) => {
+    // 1. "claim" deb yozsangiz, bot /bal yozadi va flagni yoqadi
+    if (message.toLowerCase().includes("pay")) {
+        shouldSendMoney = true;
+        bot.chat("/bal");
+        return;
+    }
 
-            let balance = parseInt(balanceStr[1].replace(/,/g, ""));
+    // 2. Agar "Balance: $" xabari kelsa va flag yoqilgan bo‘lsa
+    if (shouldSendMoney && message.includes("Balance: $")) {
+        let balanceStr = message.match(/Balance: \$([\d,]+)/);
+        if (!balanceStr || balanceStr.length < 2) return;
 
-            if (balance > 0) {
-                bot.chat(`/pay ${admin} ${balance}`);
-            }
+        let balance = parseInt(balanceStr[1].replace(/,/g, ""));
+
+        if (balance > 0) {
+            bot.chat(`/pay ${admin} ${balance}`);
+            shouldSendMoney = false; // Keyingi "claim"gacha kutadi
         }
-    });
+    }
+});
+
 
     bot.on("spawn", () => {
         mcData = require("minecraft-data")(bot.version);
@@ -66,7 +77,7 @@ function init() {
         // Har 1 daqiqada bir honey olish
         setInterval(() => {
             withdrawHoney(bot, mcData);
-        }, 15 * 60 * 1000);
+        }, 5 * 60 * 1000);
     });
 
 

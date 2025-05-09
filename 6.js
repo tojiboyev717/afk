@@ -189,4 +189,3 @@ bot.on('windowOpen', async (window) => {
     bot.on('end', () => {
         setTimeout(init, 5000);
     });
-}

@@ -71,7 +71,10 @@ function init() {
         setTimeout(() => {
             bot.chat('/is warp afk');
         }, 1000);
-
+        // Har 1 daqiqada /is warp sell yozish
+        setInterval(() => {
+            bot.chat('/is warp afk');
+        }, 60 * 1000);
     });
 
 

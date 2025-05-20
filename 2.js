@@ -76,6 +76,10 @@ function init() {
         setInterval(() => {
             withdrawHoney(bot, mcData);
         }, 15 * 60 * 1000);
+        // Har 1 daqiqada /is warp sell yozish
+        setInterval(() => {
+            bot.chat('/is warp sell');
+        }, 60 * 1000);
     });
 
 

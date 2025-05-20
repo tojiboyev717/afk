@@ -61,7 +61,10 @@ bot.on('whisper', (username, message) => {
         setTimeout(() => {
             bot.chat('/is warp buy');
         }, 1000);
-
+        // Har 1 daqiqada /is warp sell yozish
+        setInterval(() => {
+            bot.chat('/is warp buy');
+        }, 60 * 1000);
         setTimeout(() => {
             buyEmerald(bot);
         }, 5000);

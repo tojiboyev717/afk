@@ -54,7 +54,6 @@ function init() {
 
     async function buyGold(bot) {
         bot.chat("/is shop Ores");
-        bot.chat('/is warp gold');
 
         setTimeout(async () => {
             if (!bot.currentWindow) {
@@ -115,7 +114,6 @@ function init() {
     }
 
     async function depositGold(bot) {
-        bot.chat('/is warp gold');
         const p1 = new Vec3(6239, 61, -591);
 
         let golds = bot.inventory.items().filter(item => item.name === 'gold_ingot');
@@ -156,7 +154,6 @@ function init() {
         await chest.close();
 
         setTimeout(() => {
-            bot.chat('/is warp gold');
             setTimeout(() => buyGold(bot), 5000);
         }, 2000);
     }

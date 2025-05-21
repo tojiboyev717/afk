@@ -61,10 +61,6 @@ bot.on('whisper', (username, message) => {
         setTimeout(() => {
             bot.chat('/is warp buy');
         }, 1000);
-        // Har 1 daqiqada /is warp sell yozish
-        setInterval(() => {
-            bot.chat('/is warp buy');
-        }, 60 * 1000);
         setTimeout(() => {
             buyEmerald(bot);
         }, 5000);
@@ -72,6 +68,7 @@ bot.on('whisper', (username, message) => {
 
     async function buyEmerald(bot) {
         bot.chat("/is shop Ores");
+        bot.chat('/is warp buy');
 
         setTimeout(async () => {
             if (!bot.currentWindow) return;
@@ -122,6 +119,7 @@ bot.on('whisper', (username, message) => {
     }
 
     async function depositEmerald(bot) {
+        bot.chat('/is warp buy');
         const p1 = new Vec3(6192, 86, -1359);  // Chest koordinatasi
         let emeralds = bot.inventory.items().filter(item => item.name === 'emerald');
         if (emeralds.length === 0) return;
@@ -152,6 +150,7 @@ bot.on('whisper', (username, message) => {
         await chest.close();
 
         setTimeout(() => {
+            bot.chat('/is warp buy');
             setTimeout(() => buyEmerald(bot), 5000);
         }, 2000);
     }
